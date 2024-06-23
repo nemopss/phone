@@ -29,7 +29,18 @@ func main() {
 	must(err)
 	defer db.Close()
 
-	must(db.Ping())
+	must(createNumbersTable(db))
+}
+
+func createNumbersTable(db *sql.DB) error {
+	statement := `
+		CREATE TABLE IF NOT EXISTS phoneNumbers (
+			id SERIAL,
+			value VARCHAR(255)
+		)
+	`
+	_, err := db.Exec(statement)
+	return err
 }
 
 func must(err error) {
